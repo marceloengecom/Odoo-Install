@@ -22,7 +22,7 @@ DB_HOST: Endereço do servidor do Odoo. Padrão é "False".
 DB_PASSWORD: Senha do usuário postgresql. O padrão é "False".
 ```
 
-#### 3. Torne executavel o script:
+#### 3. Torne o script executável:
 ```
 sudo chmod +x installOdoo14Ubuntu.sh
 ```
