@@ -1,12 +1,12 @@
 
-## [installOdoo14Ubuntu.sh](https://github.com/marceloengecom/Odoo-Install/14.0/installOdoo14Ubuntu.sh)
+## [installOdoo14Ubuntu.sh](https://github.com/marceloengecom/Odoo-Install/blob/14.0/installOdoo14Ubuntu.sh)
 #### Este script instala a versão Comunity do Odoo 14.0 no Ubuntu 20.04
 
 ### PROCEDIMENTO DE INSTALAÇÃO
 
 #### 1. Download the script:
 ```
-sudo wget https://github.com/marceloengecom/Odoo-Install/14.0/installOdoo14Ubuntu.sh
+sudo wget https://github.com/marceloengecom/Odoo-Install/blob/14.0/installOdoo14Ubuntu.sh
 ```
 
 #### 2. Confira os parâmetros e, se necessário, modifique de acordo com o que você deseja:
