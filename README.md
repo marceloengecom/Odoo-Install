@@ -14,13 +14,13 @@
 
 #### 1. Faça o download do respectivo script:
 ```
-sudo wget https://github.com/marceloengecom/Odoo-Install/blob/14.0/installOdoo14.sh
+sudo wget https://raw.githubusercontent.com/marceloengecom/Odoo-Install/14.0/installOdoo14.sh
 ```
 ```
-sudo wget https://github.com/marceloengecom/Odoo-Install/blob/14.0/installBRLocalization.sh
+sudo wget https://raw.githubusercontent.com/marceloengecom/Odoo-Install/14.0/installBRLocalization.sh
 ```
 ```
-sudo wget https://github.com/marceloengecom/Odoo-Install/blob/14.0/installOdoo14+BRLocalization.sh
+sudo wget https://raw.githubusercontent.com/marceloengecom/Odoo-Install/14.0/installOdoo14%2BBRLocalization.sh
 ```
 
 
