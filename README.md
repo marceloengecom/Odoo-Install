@@ -20,7 +20,7 @@ sudo wget https://raw.githubusercontent.com/marceloengecom/Odoo-Install/14.0/ins
 sudo wget https://raw.githubusercontent.com/marceloengecom/Odoo-Install/14.0/installBRLocalization.sh
 ```
 ```
-sudo wget https://raw.githubusercontent.com/marceloengecom/Odoo-Install/14.0/installOdoo14%2BBRLocalization.sh
+sudo wget https://raw.githubusercontent.com/marceloengecom/Odoo-Install/14.0/installOdoo14_2BBRLocalization.sh
 ```
 
 
