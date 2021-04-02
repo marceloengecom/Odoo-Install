@@ -17,8 +17,9 @@ ODOO_PORT="8069"
 
 # Fixed variables
 ODOO_DIR="/opt/$ODOO_USER"
-ODOO_DIR_ADDONS="$ODOO_DIR/addons"
-ODOO_DIR_TRUSTCODE="$ODOO_DIR_ADDONS/odoo-brasil"
+ODOO_DIR_ADDONS="$ODOO_DIR/${ODOO_USER}-server/addons"
+ODOO_DIR_CUSTOM="$ODOO_DIR/custom-addons"
+ODOO_DIR_TRUSTCODE="$ODOO_CUSTOM/odoo-brasil"
 ODOO_CONFIG="${ODOO_USER}-server"
 ODOO_SERVICE="${ODOO_USER}.service"
 ODOO_IP="`hostname -I`"
