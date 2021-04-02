@@ -52,13 +52,13 @@ sudo chmod +x installOdoo14+BRLocalization.sh
 
 #### 4. Execute o respectivo script:
 ```
-./installOdoo14.sh
+sudo ./installOdoo14.sh
 ```
 ```
-./installBRLocalization.sh
+sudo ./installBRLocalization.sh
 ```
 ```
-./installOdoo14+BRLocalization.sh
+sudo ./installOdoo14+BRLocalization.sh
 ```
 
 
