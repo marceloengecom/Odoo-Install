@@ -21,6 +21,8 @@ INSTALL_WKHTMLTOPDF="True"
 
 # Fixed variables
 ODOO_DIR="/opt/$ODOO_USER"
+ODOO_DIR_ADDONS="$ODOO_DIR/addons"
+ODOO_DIR_TRUSTCODE="$ODOO_DIR_ADDONS/odoo-brasil"
 ODOO_DIR_SERVER="$ODOO_DIR/${ODOO_USER}-server"
 ODOO_CONFIG="${ODOO_USER}-server"
 ODOO_SERVICE="${ODOO_USER}.service"
@@ -120,7 +122,7 @@ echo -e "\n*** INSTALLING ODOO SERVER ***"
 sudo git clone https://www.github.com/odoo/odoo --depth 1 --branch $ODOO_VERSION $ODOO_DIR_SERVER/
 
 echo -e "\n*** CREATE CUSTOM ADDONS MODULE DIRECTORY ***"
-sudo su $ODOO_USER -c "mkdir $ODOO_DIR/addons"
+sudo su $ODOO_USER -c "mkdir $ODOO_DIR_ADDONS"
 
 echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
 sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
@@ -132,23 +134,23 @@ sudo pip3 install -r $ODOO_DIR_SERVER/requirements.txt
 echo -e "\n*** CREATE SERVER CONFIG FILE ***"
 sudo touch /etc/${ODOO_CONFIG}.conf
 
-sudo su root -c "printf '[options] \n >> /etc/${ODOO_CONFIG}.conf"
+sudo su root -c "printf '[options]\n' >> /etc/${ODOO_CONFIG}.conf"
 sudo su root -c "printf '; This is the password that allows database operations:\n' >> /etc/${ODOO_CONFIG}.conf"
 sudo su root -c "printf 'admin_passwd = ${DB_ADMINPASS}\n' >> /etc/${ODOO_CONFIG}.conf"
 sudo su root -c "printf 'db_host = ${DB_HOST}\n' >> /etc/${ODOO_CONFIG}.conf"
+sudo su root -c "printf 'db_password = ${DB_PASSWORD}\n' >> /etc/${ODOO_CONFIG}.conf"
 sudo su root -c "printf 'db_port = ${DB_PORT}\n' >> /etc/${ODOO_CONFIG}.conf"
 sudo su root -c "printf 'db_user = ${DB_USER}\n' >> /etc/${ODOO_CONFIG}.conf"
-sudo su root -c "printf 'db_password = ${DB_PASSWORD}\n' >> /etc/${ODOO_CONFIG}.conf"
 sudo su root -c "printf 'xmlrpc_port = ${ODOO_PORT}\n' >> /etc/${ODOO_CONFIG}.conf"
 sudo su root -c "printf 'logfile = /var/log/${ODOO_USER}/${ODOO_CONFIG}.log\n' >> /etc/${ODOO_CONFIG}.conf"
-sudo su root -c "printf 'addons_path=${ODOO_DIR_SERVER}/addons\n' >> /etc/${ODOO_CONFIG}.conf"
+sudo su root -c "printf 'addons_path=${ODOO_DIR_ADDONS}\n' >> /etc/${ODOO_CONFIG}.conf"
 
 sudo chown $ODOO_USER:$ODOO_USER /etc/${ODOO_CONFIG}.conf
 sudo chmod 640 /etc/${ODOO_CONFIG}.conf
 
 
 #--------------------------------------------------
-# Adding ODOO as a deamon (initscript)
+# ODOO AS A DEAMON (INIT SCRIPT)
 #--------------------------------------------------
 
 echo -e "*** CREATE SYSTEMD INIT FILE ***"
