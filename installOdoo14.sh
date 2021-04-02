@@ -14,7 +14,7 @@
 ##############################################################################################################
 
 # Set the variables
-ODOO_USER="odoo14"
+ODOO_USER="odoo"
 ODOO_VERSION="14.0"
 ODOO_PORT="8069"
 INSTALL_WKHTMLTOPDF="True"
