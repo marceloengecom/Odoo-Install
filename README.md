@@ -3,9 +3,9 @@
 #### Este script instala somente a versão Comunity do Odoo 14.0 no Ubuntu 20.04
 
 ## [installBRLocalization.sh](https://github.com/marceloengecom/Odoo-Install/blob/14.0/installBRLocalization.sh)
-#### Este script instala somente a localização brasileira desenvolvida pela TrustCode. Necessário já ter instalado o Odoo e Ubuntu 20.04
+#### Este script instala somente a localização brasileira desenvolvida pela TrustCode. Necessário já ter instalado o Odoo no Ubuntu 20.04
 
-## [installOdoo14+BRLocalization.sh](https://github.com/marceloengecom/Odoo-Install/blob/14.0/installOdoo14+BRLocalization.sh)
+## [installOdoo14_BRLocalization.sh](https://github.com/marceloengecom/Odoo-Install/blob/14.0/installOdoo14_BRLocalization.sh)
 #### Este script instala a versão Comunity do Odoo 14.0 em conjunto com a localização brasileira desenvolvida pela TrustCode no Ubunto 20.04
 
 
