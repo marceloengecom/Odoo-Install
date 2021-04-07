@@ -187,5 +187,5 @@ sudo systemctl restart $ODOO_SERVICE
 echo -e "*** STATUS ODOO ***"
 sudo systemctl status $ODOO_SERVICE
 
-echo -e "*** OPEN ODOO INSTANCE ON YOUR BROWSE ***"
+echo -e "*** OPEN ODOO INSTANCE ON YOUR BROWSER ***"
 echo -e "*** IP ADDRESS: $ODOO_IP - PORT: $ODOO_PORT ***"
