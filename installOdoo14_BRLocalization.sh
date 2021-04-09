@@ -152,6 +152,9 @@ sudo git clone https://github.com/Trust-Code/odoo-brasil --depth 1 --branch $ODO
 echo -e "\n*** INSTALL TRUSTCODE ODOO $ODOO_VERSION REQUIREMENTS PYTHON PACKAGES ***"
 sudo pip3 install -r $ODOO_DIR_TRUSTCODE/requirements.txt
 
+echo -e "\n*** INSTALL OTHERS TRUSTCODE PYTHON PACKAGES ***"
+sudo pip3 install python3-cnab python3-boleto pycnab240 python-sped
+
 echo -e "\n*** INSTALL IUGU PYTHON REST API  ***"
 sudo pip3 install iugu
 
