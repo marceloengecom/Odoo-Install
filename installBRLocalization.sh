@@ -34,6 +34,9 @@ sudo git clone https://github.com/Trust-Code/odoo-brasil --depth 1 --branch $ODO
 echo -e "\n*** INSTALL TRUSTCODE ODOO $ODOO_VERSION REQUIREMENTS PYTHON PACKAGES ***"
 sudo pip3 install -r $ODOO_DIR_TRUSTCODE/requirements.txt
 
+echo -e "\n*** INSTALL IUGU PYTHON REST API  ***"
+sudo pip3 install iugu
+
 echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
 sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
 
@@ -52,5 +55,12 @@ sudo systemctl restart $ODOO_SERVICE
 echo -e "*** STATUS ODOO SERVICE ***"
 sudo systemctl status $ODOO_SERVICE
 
+
+echo -e "*** COMMANDS TO CHECK ODOO LOGS:  ***"
+echo -e "*** 'sudo journalctl -u $ODOO_USER' OR 'sudo tail -f /var/log/${ODOO_USER}/${ODOO_CONFIG}.log' ***"
+
+
 echo -e "*** OPEN ODOO INSTANCE ON YOUR BROWSER ***"
+echo -e "*** ************************************************* ***"
 echo -e "*** IP ADDRESS: $ODOO_IP - PORT: $ODOO_PORT ***"
+echo -e "*** ************************************************* ***"

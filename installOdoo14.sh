@@ -187,5 +187,12 @@ sudo systemctl restart $ODOO_SERVICE
 echo -e "*** STATUS ODOO ***"
 sudo systemctl status $ODOO_SERVICE
 
+
+echo -e "*** COMMANDS TO CHECK ODOO LOGS:  ***"
+echo -e "*** 'sudo journalctl -u $ODOO_USER' OR 'sudo tail -f /var/log/${ODOO_USER}/${ODOO_CONFIG}.log' ***"
+
+
 echo -e "*** OPEN ODOO INSTANCE ON YOUR BROWSER ***"
+echo -e "*** ************************************************* ***"
 echo -e "*** IP ADDRESS: $ODOO_IP - PORT: $ODOO_PORT ***"
+echo -e "*** ************************************************* ***"
