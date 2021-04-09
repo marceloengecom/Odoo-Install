@@ -19,6 +19,7 @@
 ODOO_USER="odoo"
 ODOO_VERSION="14.0"
 ODOO_PORT="8069"
+TIMEZONE="America/Sao_Paulo"
 INSTALL_WKHTMLTOPDF="True"
 
 # Fixed variables
@@ -56,6 +57,14 @@ WKHTMLTOX_X64=https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-
 echo -e "\n*** UPDATE SERVER ***"
 sudo apt update
 sudo apt upgrade -y
+
+#--------------------------------------------------
+# Server Timezone
+#--------------------------------------------------
+echo -e "\n*** Set Timezone ***"
+sudo timedatectl set-timezone $TIMEZONE
+echo -e "\n*** LOCAL TIME: ***"
+sudo date
 
 #--------------------------------------------------
 # Install PostgreSQL Server
