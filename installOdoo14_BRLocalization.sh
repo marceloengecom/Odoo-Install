@@ -27,6 +27,7 @@ ODOO_DIR="/opt/$ODOO_USER"
 ODOO_DIR_ADDONS="$ODOO_DIR/${ODOO_USER}-server/addons"
 ODOO_DIR_CUSTOM="$ODOO_DIR/custom-addons"
 ODOO_DIR_TRUSTCODE="$ODOO_DIR_CUSTOM/odoo-brasil"
+ODOO_DIR_OCA="$ODOO_DIR_CUSTOM/oca"
 ODOO_DIR_SERVER="$ODOO_DIR/${ODOO_USER}-server"
 ODOO_CONFIG="${ODOO_USER}-server"
 ODOO_SERVICE="${ODOO_USER}.service"
@@ -142,7 +143,6 @@ sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
 echo -e "\n*** INSTALL ODOO $ODOO_VERSION REQUIREMENTS PYTHON PACKAGES ***"
 sudo pip3 install -r $ODOO_DIR_SERVER/requirements.txt
 
-
 #--------------------------------------------------
 # Install TRUSTCODE LOCALIZATION (BRAZIL)
 #--------------------------------------------------
@@ -157,6 +157,26 @@ sudo pip3 install python3-cnab python3-boleto pycnab240 python-sped
 
 echo -e "\n*** INSTALL IUGU PYTHON REST API  ***"
 sudo pip3 install iugu
+
+echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
+sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
+
+
+#--------------------------------------------------
+# Install OCA MODULES TO REPORTS AND FISCAL YEAR
+#--------------------------------------------------
+echo -e "\n*** CLONE 'MIS Builder' FROM GITHUB ***"
+sudo git clone https://github.com/OCA/mis-builder --branch $ODOO_VERSION $ODOO_DIR_OCA/
+
+echo -e "\n*** CLONE 'Reporting Engine' FROM GITHUB ***"
+sudo git clone https://github.com/OCA/mis-builder --branch $ODOO_VERSION $ODOO_DIR_OCA/
+
+echo -e "\n*** CLONE 'Server-UX' FROM GITHUB ***"
+sudo git clone https://github.com/OCA/server-ux --branch $ODOO_VERSION $ODOO_DIR_OCA/
+
+echo -e "\n*** CLONE 'Financial Tools' FROM GITHUB ***"
+sudo git clone  https://github.com/OCA/account-financial-tools --branch $ODOO_VERSION $ODOO_DIR_OCA/
+
 
 echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
 sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
@@ -178,7 +198,7 @@ sudo su root -c "printf 'db_port = ${DB_PORT}\n' >> /etc/${ODOO_CONFIG}.conf"
 sudo su root -c "printf 'db_user = ${DB_USER}\n' >> /etc/${ODOO_CONFIG}.conf"
 sudo su root -c "printf 'xmlrpc_port = ${ODOO_PORT}\n' >> /etc/${ODOO_CONFIG}.conf"
 sudo su root -c "printf 'logfile = /var/log/${ODOO_USER}/${ODOO_CONFIG}.log\n' >> /etc/${ODOO_CONFIG}.conf"
-sudo su root -c "printf 'addons_path=${ODOO_DIR_ADDONS},${ODOO_DIR_TRUSTCODE}\n' >> /etc/${ODOO_CONFIG}.conf"
+sudo su root -c "printf 'addons_path=${ODOO_DIR_ADDONS},${ODOO_DIR_TRUSTCODE}},${ODOO_DIR_OCA}\n' >> /etc/${ODOO_CONFIG}.conf"
 
 sudo chown $ODOO_USER:$ODOO_USER /etc/${ODOO_CONFIG}.conf
 sudo chmod 640 /etc/${ODOO_CONFIG}.conf
