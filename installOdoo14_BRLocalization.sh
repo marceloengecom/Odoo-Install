@@ -28,6 +28,7 @@ ODOO_DIR_ADDONS="$ODOO_DIR/${ODOO_USER}-server/addons"
 ODOO_DIR_CUSTOM="$ODOO_DIR/custom-addons"
 ODOO_DIR_TRUSTCODE="$ODOO_DIR_CUSTOM/odoo-brasil"
 ODOO_DIR_OCA="$ODOO_DIR_CUSTOM/oca"
+ODOO_DIR_SOULINUX="$ODOO_DIR_CUSTOM/soulinux-apps"
 ODOO_DIR_SERVER="$ODOO_DIR/${ODOO_USER}-server"
 ODOO_CONFIG="${ODOO_USER}-server"
 ODOO_SERVICE="${ODOO_USER}.service"
@@ -166,16 +167,27 @@ sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
 # Install OCA MODULES TO REPORTS AND FISCAL YEAR
 #--------------------------------------------------
 echo -e "\n*** CLONE 'MIS Builder' FROM GITHUB ***"
-sudo git clone https://github.com/OCA/mis-builder --branch $ODOO_VERSION $ODOO_DIR_OCA/mis-builder
+sudo git clone https://github.com/OCA/mis-builder --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/mis-builder
 
 echo -e "\n*** CLONE 'Reporting Engine' FROM GITHUB ***"
-sudo git clone https://github.com/OCA/reporting-engine --branch $ODOO_VERSION $ODOO_DIR_OCA/reporting-engine
+sudo git clone https://github.com/OCA/reporting-engine --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/reporting-engine
 
 echo -e "\n*** CLONE 'Server-UX' FROM GITHUB ***"
-sudo git clone https://github.com/OCA/server-ux --branch $ODOO_VERSION $ODOO_DIR_OCA/server-ux
+sudo git clone https://github.com/OCA/server-ux --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/server-ux
 
 echo -e "\n*** CLONE 'Financial Tools' FROM GITHUB ***"
-sudo git clone  https://github.com/OCA/account-financial-tools --branch $ODOO_VERSION $ODOO_DIR_OCA/account-financial-tools
+sudo git clone  https://github.com/OCA/account-financial-tools --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/account-financial-tools
+
+
+echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
+sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
+
+
+#--------------------------------------------------
+# Install SOULINUX ACCOUNT CHART
+#--------------------------------------------------
+echo -e "\n*** CLONE 'MIS Builder' FROM GITHUB ***"
+sudo git clone https://github.com/marceloengecom/soulinux-apps --depth 1 --branch $ODOO_VERSION $ODOO_DIR_SOULINUX
 
 
 echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
@@ -198,7 +210,7 @@ sudo su root -c "printf 'db_port = ${DB_PORT}\n' >> /etc/${ODOO_CONFIG}.conf"
 sudo su root -c "printf 'db_user = ${DB_USER}\n' >> /etc/${ODOO_CONFIG}.conf"
 sudo su root -c "printf 'xmlrpc_port = ${ODOO_PORT}\n' >> /etc/${ODOO_CONFIG}.conf"
 sudo su root -c "printf 'logfile = /var/log/${ODOO_USER}/${ODOO_CONFIG}.log\n' >> /etc/${ODOO_CONFIG}.conf"
-sudo su root -c "printf 'addons_path=${ODOO_DIR_ADDONS},${ODOO_DIR_TRUSTCODE}},${ODOO_DIR_OCA}\n' >> /etc/${ODOO_CONFIG}.conf"
+sudo su root -c "printf 'addons_path=${ODOO_DIR_ADDONS},${ODOO_DIR_TRUSTCODE}},${ODOO_DIR_OCA},${ODOO_DIR_SOULINUX}\n' >> /etc/${ODOO_CONFIG}.conf"
 
 sudo chown $ODOO_USER:$ODOO_USER /etc/${ODOO_CONFIG}.conf
 sudo chmod 640 /etc/${ODOO_CONFIG}.conf
