@@ -28,7 +28,7 @@ ODOO_DIR_ADDONS="$ODOO_DIR/${ODOO_USER}-server/addons"
 ODOO_DIR_CUSTOM="$ODOO_DIR/custom-addons"
 ODOO_DIR_TRUSTCODE="$ODOO_DIR_CUSTOM/odoo-brasil"
 ODOO_DIR_OCA="$ODOO_DIR_CUSTOM/oca"
-ODOO_DIR_SOULINUX="$ODOO_DIR_CUSTOM/soulinux-apps"
+ODOO_DIR_SOULINUX="$ODOO_DIR_CUSTOM/soulinux"
 ODOO_DIR_SERVER="$ODOO_DIR/${ODOO_USER}-server"
 ODOO_CONFIG="${ODOO_USER}-server"
 ODOO_SERVICE="${ODOO_USER}.service"
@@ -186,7 +186,7 @@ sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
 #--------------------------------------------------
 # Install SOULINUX ACCOUNT CHART
 #--------------------------------------------------
-echo -e "\n*** CLONE 'MIS Builder' FROM GITHUB ***"
+echo -e "\n*** CLONE 'SOULinux Apps' FROM GITHUB ***"
 sudo git clone https://github.com/marceloengecom/soulinux-apps --depth 1 --branch $ODOO_VERSION $ODOO_DIR_SOULINUX
 
 
