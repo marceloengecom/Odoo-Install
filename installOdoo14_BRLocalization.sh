@@ -169,7 +169,7 @@ echo -e "\n*** CLONE 'MIS Builder' FROM GITHUB ***"
 sudo git clone https://github.com/OCA/mis-builder --branch $ODOO_VERSION $ODOO_DIR_OCA/
 
 echo -e "\n*** CLONE 'Reporting Engine' FROM GITHUB ***"
-sudo git clone https://github.com/OCA/mis-builder --branch $ODOO_VERSION $ODOO_DIR_OCA/
+sudo git clone https://github.com/OCA/reporting-engine --branch $ODOO_VERSION $ODOO_DIR_OCA/
 
 echo -e "\n*** CLONE 'Server-UX' FROM GITHUB ***"
 sudo git clone https://github.com/OCA/server-ux --branch $ODOO_VERSION $ODOO_DIR_OCA/
