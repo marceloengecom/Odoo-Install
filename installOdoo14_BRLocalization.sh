@@ -166,16 +166,16 @@ sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
 # Install OCA MODULES TO REPORTS AND FISCAL YEAR
 #--------------------------------------------------
 echo -e "\n*** CLONE 'MIS Builder' FROM GITHUB ***"
-sudo git clone https://github.com/OCA/mis-builder --branch $ODOO_VERSION $ODOO_DIR_OCA/
+sudo git clone https://github.com/OCA/mis-builder --branch $ODOO_VERSION $ODOO_DIR_OCA/mis-builder
 
 echo -e "\n*** CLONE 'Reporting Engine' FROM GITHUB ***"
-sudo git clone https://github.com/OCA/reporting-engine --branch $ODOO_VERSION $ODOO_DIR_OCA/
+sudo git clone https://github.com/OCA/reporting-engine --branch $ODOO_VERSION $ODOO_DIR_OCA/reporting-engine
 
 echo -e "\n*** CLONE 'Server-UX' FROM GITHUB ***"
-sudo git clone https://github.com/OCA/server-ux --branch $ODOO_VERSION $ODOO_DIR_OCA/
+sudo git clone https://github.com/OCA/server-ux --branch $ODOO_VERSION $ODOO_DIR_OCA/server-ux
 
 echo -e "\n*** CLONE 'Financial Tools' FROM GITHUB ***"
-sudo git clone  https://github.com/OCA/account-financial-tools --branch $ODOO_VERSION $ODOO_DIR_OCA/
+sudo git clone  https://github.com/OCA/account-financial-tools --branch $ODOO_VERSION $ODOO_DIR_OCA/account-financial-tools
 
 
 echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
