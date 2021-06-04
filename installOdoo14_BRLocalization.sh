@@ -29,6 +29,7 @@ ODOO_DIR_CUSTOM="$ODOO_DIR/custom-addons"
 ODOO_DIR_TRUSTCODE="$ODOO_DIR_CUSTOM/odoo-brasil"
 ODOO_DIR_OCA="$ODOO_DIR_CUSTOM/oca"
 ODOO_DIR_SOULINUX="$ODOO_DIR_CUSTOM/soulinux"
+ODOO_DIR_CODE137="$ODOO_DIR_CUSTOM/code137"
 ODOO_DIR_SERVER="$ODOO_DIR/${ODOO_USER}-server"
 ODOO_CONFIG="${ODOO_USER}-server"
 ODOO_SERVICE="${ODOO_USER}.service"
@@ -180,7 +181,6 @@ sudo pip3 install -r $ODOO_DIR_OCA/server-ux/requirements.txt
 sudo pip3 install -r $ODOO_DIR_OCA/reporting-engine/requirements.txt
 sudo pip3 install -r $ODOO_DIR_OCA/account-financial-tools/requirements.txt
 
-
 echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
 sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
 
@@ -188,9 +188,19 @@ sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
 #--------------------------------------------------
 # Install SOULINUX ACCOUNT CHART
 #--------------------------------------------------
-echo -e "\n*** CLONE 'SOULinux Apps' FROM GITHUB ***"
+echo -e "\n*** CLONE 'Plano de Contas SOULinux' FROM GITHUB ***"
 sudo git clone https://github.com/marceloengecom/br_coa_soulinux --depth 1 --branch $ODOO_VERSION $ODOO_DIR_SOULINUX/br_coa_soulinux
 
+echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
+sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
+
+
+#--------------------------------------------------
+# Install CODE137 FORK MODULES
+# Only PagHiper Module has workinh on Odoo 14.0
+#--------------------------------------------------
+echo -e "\n*** CLONE 'FORK CODE137 Apps' FROM GITHUB ***"
+sudo git clone https://github.com/marceloengecom/odoo-apps --depth 1 --branch $ODOO_VERSION $ODOO_DIR_CODE137
 
 echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
 sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
@@ -212,7 +222,7 @@ sudo su root -c "printf 'db_port = ${DB_PORT}\n' >> /etc/${ODOO_CONFIG}.conf"
 sudo su root -c "printf 'db_user = ${DB_USER}\n' >> /etc/${ODOO_CONFIG}.conf"
 sudo su root -c "printf 'xmlrpc_port = ${ODOO_PORT}\n' >> /etc/${ODOO_CONFIG}.conf"
 sudo su root -c "printf 'logfile = /var/log/${ODOO_USER}/${ODOO_CONFIG}.log\n' >> /etc/${ODOO_CONFIG}.conf"
-sudo su root -c "printf 'addons_path=${ODOO_DIR_ADDONS},${ODOO_DIR_TRUSTCODE},${ODOO_DIR_SOULINUX}/br_coa_soulinux,${ODOO_DIR_OCA}/mis-builder,${ODOO_DIR_OCA}/reporting-engine,${ODOO_DIR_OCA}/server-ux,${ODOO_DIR_OCA}/account-financial-tools\n' >> /etc/${ODOO_CONFIG}.conf"
+sudo su root -c "printf 'addons_path=${ODOO_DIR_ADDONS},${ODOO_DIR_TRUSTCODE},${ODOO_DIR_CODE137},${ODOO_DIR_SOULINUX}/br_coa_soulinux,${ODOO_DIR_OCA}/mis-builder,${ODOO_DIR_OCA}/reporting-engine,${ODOO_DIR_OCA}/server-ux,${ODOO_DIR_OCA}/account-financial-tools\n' >> /etc/${ODOO_CONFIG}.conf"
 
 sudo chown $ODOO_USER:$ODOO_USER /etc/${ODOO_CONFIG}.conf
 sudo chmod 640 /etc/${ODOO_CONFIG}.conf
