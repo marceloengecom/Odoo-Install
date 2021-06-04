@@ -156,9 +156,6 @@ sudo pip3 install -r $ODOO_DIR_TRUSTCODE/requirements.txt
 echo -e "\n*** INSTALL OTHERS TRUSTCODE PYTHON PACKAGES ***"
 sudo pip3 install python3-cnab python3-boleto pycnab240 python-sped
 
-echo -e "\n*** INSTALL IUGU PYTHON REST API  ***"
-sudo pip3 install iugu
-
 echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
 sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
 
@@ -166,17 +163,22 @@ sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
 #--------------------------------------------------
 # Install OCA MODULES TO REPORTS AND FISCAL YEAR
 #--------------------------------------------------
+echo -e "\n*** CLONE 'Server-UX' FROM GITHUB ***"
+sudo git clone https://github.com/OCA/server-ux --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/server-ux
+
 echo -e "\n*** CLONE 'MIS Builder' FROM GITHUB ***"
 sudo git clone https://github.com/OCA/mis-builder --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/mis-builder
 
 echo -e "\n*** CLONE 'Reporting Engine' FROM GITHUB ***"
 sudo git clone https://github.com/OCA/reporting-engine --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/reporting-engine
 
-echo -e "\n*** CLONE 'Server-UX' FROM GITHUB ***"
-sudo git clone https://github.com/OCA/server-ux --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/server-ux
-
 echo -e "\n*** CLONE 'Financial Tools' FROM GITHUB ***"
 sudo git clone  https://github.com/OCA/account-financial-tools --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/account-financial-tools
+
+echo -e "\n*** INSTALL OCA ODOO $ODOO_VERSION REQUIREMENTS PYTHON PACKAGES ***"
+sudo pip3 install -r $ODOO_DIR_OCA/server-ux/requirements.txt
+sudo pip3 install -r $ODOO_DIR_OCA/reporting-engine/requirements.txt
+sudo pip3 install -r $ODOO_DIR_OCA/account-financial-tools/requirements.txt
 
 
 echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"

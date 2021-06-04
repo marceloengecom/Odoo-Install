@@ -37,9 +37,6 @@ sudo pip3 install -r $ODOO_DIR_TRUSTCODE/requirements.txt
 echo -e "\n*** INSTALL OTHERS TRUSTCODE PYTHON PACKAGES ***"
 sudo pip3 install python3-cnab python3-boleto pycnab240 python-sped
 
-echo -e "\n*** INSTALL IUGU PYTHON REST API  ***"
-sudo pip3 install iugu
-
 echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
 sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
 
