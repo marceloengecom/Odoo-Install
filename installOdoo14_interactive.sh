@@ -74,7 +74,7 @@ Pasta padrão de instalação dos Módulos Personalizados: $ODOO_DIR_CUSTOM
 
 Pasta padrão dos módulos TrustCODE: $ODOO_DIR_TRUSTCODE
 Pasta padrão dos módulos OCA: $ODOO_DIR_OCA
-Pasta padrão dos módulos Code137: ODOO_DIR_CODE137
+Pasta padrão dos módulos Code137: $ODOO_DIR_CODE137
 Pasta padrão dos módulos SOULinux: $ODOO_DIR_SOULINUX
 
 Pasta padrão de instalação do servidor Odoo: $ODOO_DIR_SERVER
