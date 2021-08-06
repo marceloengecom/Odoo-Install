@@ -15,17 +15,29 @@
 #
 ##############################################################################################################
 
-# Set the variables
-ODOO_USER="odoo"
-ODOO_VERSION="14.0"
-ODOO_PORT="8069"
-TIMEZONE="America/Sao_Paulo"
-INSTALL_WKHTMLTOPDF="True"
+
+echo -e "\n*** INFORME OS PARÂMETROS BÁSICOS DE INSTALAÇÃO DO ODOO ***\n"
+
+read -p 'Informe o nome do seu usuário Odoo (ex: odoo): ' ODOO_USER
+read -p 'Informe a versão do seu Odoo (ex: 14.0): ' ODOO_VERSION
+read -p 'Informe a porta do seu Odoo (ex: 8069): ' ODOO_PORT
+read -p 'Informe a sua Timezone (ex: America/Sao_Paulo): ' TIMEZONE
+read -p 'Informe a senha administrativa do banco de dados Odoo (ex: Psql-123456): ' DB_ADMINPASS
+
+
+# Global Variables
+ODOO_USER=$ODOO_USER
+ODOO_VERSION=$ODOO_VERSION
+ODOO_PORT=$ODOO_PORT
+TIMEZONE=$TIMEZONE
+# Set the superadmin password to postgresql
+DB_ADMINPASS=$DB_ADMINPASS
 
 # Fixed variables
 ODOO_DIR="/opt/$ODOO_USER"
 ODOO_DIR_ADDONS="$ODOO_DIR/${ODOO_USER}-server/addons"
 ODOO_DIR_CUSTOM="$ODOO_DIR/custom-addons"
+
 ODOO_DIR_TRUSTCODE="$ODOO_DIR_CUSTOM/odoo-brasil"
 ODOO_DIR_OCA="$ODOO_DIR_CUSTOM/oca"
 ODOO_DIR_SOULINUX="$ODOO_DIR_CUSTOM/soulinux"
@@ -33,7 +45,54 @@ ODOO_DIR_CODE137="$ODOO_DIR_CUSTOM/code137"
 ODOO_DIR_SERVER="$ODOO_DIR/${ODOO_USER}-server"
 ODOO_CONFIG="${ODOO_USER}-server"
 ODOO_SERVICE="${ODOO_USER}.service"
-ODOO_IP="`hostname -I`"
+ODOO_IP="$(hostname -I)"
+LINUX_DISTRIBUTION=$(awk '{ print $1 }' /etc/issue)
+INSTALL_WKHTMLTOPDF="True"
+
+echo "
+INFORMAÇÕES BÁSICAS DO SEU ODOO:
+Usuário Odoo: $ODOO_USER
+Versão Odoo: $ODOO_VERSION
+Porta Odoo: $ODOO_PORT
+Timezone: $TIMEZONE
+Senha Banco de Dados: $DB_ADMINPASS
+"
+while true; do
+        echo "Se alguma informação acima não estiver correta, reinicie o script e informe os valores corretos."
+        read -p 'As informações estão corretas? Deseja continuar? (s/n)' sn
+        case $sn in
+        [Ss]*) break ;;
+        [Nn]*) exit ;;
+        *) echo "Por favor, responda Sim ou Não." ;;
+        esac
+done
+
+echo "
+INFORMAÇÕES DE PASTAS DO ODOO:
+Pasta padrão de instalação do Odoo: $ODOO_DIR
+Pasta padrão de instalação dos Módulos Personalizados: $ODOO_DIR_CUSTOM
+
+Pasta padrão dos módulos TrustCODE: $ODOO_DIR_TRUSTCODE
+Pasta padrão dos módulos OCA: $ODOO_DIR_OCA
+Pasta padrão dos módulos Code137: ODOO_DIR_CODE137
+Pasta padrão dos módulos SOULinux: $ODOO_DIR_SOULINUX
+
+Pasta padrão de instalação do servidor Odoo: $ODOO_DIR_SERVER
+Arquivo de Configuração: ${ODOO_CONFIG}.conf
+Arquivo de Log: /var/log/${ODOO_USER}/${ODOO_CONFIG}.log
+Distribuição Linux: $LINUX_DISTRIBUTION
+Endereço IP: $ODOO_IP
+"
+
+while true; do
+        echo "Se alguma informação acima não estiver correta, ajuste os dados no próprio script."
+        read -p 'As informações estão corretas? Deseja continuar? (s/n)' sn
+        case $sn in
+        [Ss]*) break ;;
+        [Nn]*) exit ;;
+        *) echo "Por favor, responda Sim ou Não." ;;
+        esac
+done
 
 # Database config
 # The variable DB_HOST is disable (False) because we have not a rule to our network at "pg_hba.conf" file.
@@ -41,8 +100,6 @@ ODOO_IP="`hostname -I`"
 # The variable DB_PASSWORD is disable because we have use the password stored on variable DB_ADMINPASS to DB_USER user account.
 # If postgres is installed on another machine, these variables must be defined and have an access rule in the field "local IPv4 connections:" at "pg_hba.conf" file.
 
-# Set the superadmin password to postgresql
-DB_ADMINPASS="Psql-123456"
 
 # Fixed variables to postgresql
 DB_USER=$ODOO_USER
@@ -55,11 +112,16 @@ DB_PASSWORD="False"
 WKHTMLTOX_X64=https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.focal_amd64.deb
 
 #--------------------------------------------------
-# Update Server
+# Update Operational System
 #--------------------------------------------------
-echo -e "\n*** UPDATE SERVER ***"
-sudo apt update
-sudo apt upgrade -y
+if [ "$LINUX_DISTRIBUTION" = "Ubuntu" ]; then
+        sudo apt update && sudo apt upgrade -y
+else
+        echo "A distribuição não é Ubuntu"
+fi
+echo -e "LIMPANDO O CACHE DO APT, AGUARDE... \n"
+sudo apt autoclean
+sudo apt clean
 
 #--------------------------------------------------
 # Server Timezone
@@ -145,69 +207,140 @@ sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
 echo -e "\n*** INSTALL ODOO $ODOO_VERSION REQUIREMENTS PYTHON PACKAGES ***"
 sudo pip3 install -r $ODOO_DIR_SERVER/requirements.txt
 
+echo -e "\n*** ODOO INSTALL COMPLETED ***"
+    
+while true; do
+        read -p 'Iniciar a instalação dos módulos adicionais? (s/n)' sn
+        case $sn in
+        [Ss]*) break ;;
+        [Nn]*) exit ;;
+        *) echo "Por favor, responda Sim(s) ou Não(n)." ;;
+        esac
+done
+
 #--------------------------------------------------
 # Install TRUSTCODE LOCALIZATION (BRAZIL)
 #--------------------------------------------------
-echo -e "\n*** CLONE LOCALIZATION FROM GITHUB ***"
-sudo git clone https://github.com/Trust-Code/odoo-brasil --depth 1 --branch $ODOO_VERSION $ODOO_DIR_TRUSTCODE/
+read -p 'Instalar a Localização Brasileira TrustCODE? (ex: sim): ' TRUSTCODE_INSTALL
 
-echo -e "\n*** INSTALL TRUSTCODE ODOO $ODOO_VERSION REQUIREMENTS PYTHON PACKAGES ***"
-sudo pip3 install -r $ODOO_DIR_TRUSTCODE/requirements.txt
+if [ "$TRUSTCODE_INSTALL" = "sim" ]; then
+  echo -e "\n*** CLONE LOCALIZATION FROM GITHUB ***"
+  sudo git clone https://github.com/Trust-Code/odoo-brasil --depth 1 --branch $ODOO_VERSION $ODOO_DIR_TRUSTCODE/
 
-echo -e "\n*** INSTALL OTHERS TRUSTCODE PYTHON PACKAGES ***"
-sudo pip3 install python3-cnab python3-boleto pycnab240 python-sped
+  echo -e "\n*** INSTALL TRUSTCODE ODOO $ODOO_VERSION REQUIREMENTS PYTHON PACKAGES ***"
+  sudo pip3 install -r $ODOO_DIR_TRUSTCODE/requirements.txt
 
-echo -e "\n*** INSTALL IUGU PYTHON REST API  ***"
-sudo pip3 install iugu
+  echo -e "\n*** INSTALL OTHERS TRUSTCODE PYTHON PACKAGES ***"
+  sudo pip3 install python3-cnab python3-boleto pycnab240 python-sped
 
-echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
-sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
+  echo -e "\n*** INSTALL IUGU PYTHON REST API  ***"
+  sudo pip3 install iugu
+
+  echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
+  sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
+
+else
+  echo "Os módulos TrustCode não serão instalados"
+    while true; do
+            read -p 'Continuar a instalação dos demais módulos? (s/n)' sn
+            case $sn in
+            [Ss]*) break ;;
+            [Nn]*) exit ;;
+            *) echo "Por favor, responda Sim(s) ou Não(n)." ;;
+            esac
+    done
+fi
+
+#----------------------------------------------------------
+# Install OCA MODULES TO REPORTS, FISCAL YEAR and CONTRACT
+#---------------------------------------------------------
+read -p 'Instalar os módulos OCA para relatórios, ano fiscal e faturas recorrentes? (ex: sim): ' OCA_INSTALL
+
+if [ "$OCA_INSTALL" = "sim" ]; then
+  echo -e "\n*** CLONE 'Server-UX' FROM GITHUB ***"
+  sudo git clone https://github.com/OCA/server-ux --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/server-ux
+
+  echo -e "\n*** CLONE 'MIS Builder' FROM GITHUB ***"
+  sudo git clone https://github.com/OCA/mis-builder --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/mis-builder
+
+  echo -e "\n*** CLONE 'Reporting Engine' FROM GITHUB ***"
+  sudo git clone https://github.com/OCA/reporting-engine --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/reporting-engine
+
+  echo -e "\n*** CLONE 'Financial Tools' FROM GITHUB ***"
+  sudo git clone  https://github.com/OCA/account-financial-tools --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/account-financial-tools
+
+  echo -e "\n*** CLONE 'Contract' FROM GITHUB ***"
+  sudo git clone  https://github.com/OCA/contract --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/contract
 
 
-#--------------------------------------------------
-# Install OCA MODULES TO REPORTS AND FISCAL YEAR
-#--------------------------------------------------
-echo -e "\n*** CLONE 'Server-UX' FROM GITHUB ***"
-sudo git clone https://github.com/OCA/server-ux --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/server-ux
+  echo -e "\n*** INSTALL OCA ODOO $ODOO_VERSION REQUIREMENTS PYTHON PACKAGES ***"
+  sudo pip3 install -r $ODOO_DIR_OCA/server-ux/requirements.txt
+  sudo pip3 install -r $ODOO_DIR_OCA/reporting-engine/requirements.txt
+  sudo pip3 install -r $ODOO_DIR_OCA/account-financial-tools/requirements.txt
+  sudo pip3 install -r $ODOO_DIR_OCA/contract/requirements.txt
 
-echo -e "\n*** CLONE 'MIS Builder' FROM GITHUB ***"
-sudo git clone https://github.com/OCA/mis-builder --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/mis-builder
+  echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
+  sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
 
-echo -e "\n*** CLONE 'Reporting Engine' FROM GITHUB ***"
-sudo git clone https://github.com/OCA/reporting-engine --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/reporting-engine
-
-echo -e "\n*** CLONE 'Financial Tools' FROM GITHUB ***"
-sudo git clone  https://github.com/OCA/account-financial-tools --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/account-financial-tools
-
-echo -e "\n*** INSTALL OCA ODOO $ODOO_VERSION REQUIREMENTS PYTHON PACKAGES ***"
-sudo pip3 install -r $ODOO_DIR_OCA/server-ux/requirements.txt
-sudo pip3 install -r $ODOO_DIR_OCA/reporting-engine/requirements.txt
-sudo pip3 install -r $ODOO_DIR_OCA/account-financial-tools/requirements.txt
-
-echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
-sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
-
+else
+  echo "Os módulos OCA não serão instalados"
+    while true; do
+            read -p 'Continuar a instalação dos demais módulos? (s/n)' sn
+            case $sn in
+            [Ss]*) break ;;
+            [Nn]*) exit ;;
+            *) echo "Por favor, responda Sim(s) ou Não(n)." ;;
+            esac
+    done
+fi  
 
 #--------------------------------------------------
 # Install SOULINUX ACCOUNT CHART
 #--------------------------------------------------
-echo -e "\n*** CLONE 'Plano de Contas SOULinux' FROM GITHUB ***"
-sudo git clone https://github.com/marceloengecom/br_coa_soulinux --depth 1 --branch $ODOO_VERSION $ODOO_DIR_SOULINUX/br_coa_soulinux
+read -p 'Instalar o módulo de Plano de Contas da SOULinux (ex: sim): ' SOULINUX_INSTALL
 
-echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
-sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
+if [ "$SOULINUX_INSTALL" = "sim" ]; then
+  echo -e "\n*** CLONE 'Plano de Contas SOULinux' FROM GITHUB ***"
+  sudo git clone https://github.com/marceloengecom/br_coa_soulinux --depth 1 --branch $ODOO_VERSION $ODOO_DIR_SOULINUX/br_coa_soulinux
 
+  echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
+  sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
+
+else
+  echo "O módulo de Plano de Contas da SOULinux não será instalado"
+    while true; do
+            read -p 'Continuar a instalação dos demais módulos? (s/n)' sn
+            case $sn in
+            [Ss]*) break ;;
+            [Nn]*) exit ;;
+            *) echo "Por favor, responda Sim(s) ou Não(n)." ;;
+            esac
+    done
+fi  
 
 #--------------------------------------------------
 # Install CODE137 FORK MODULES
 # Only PagHiper Module has workinh on Odoo 14.0
 #--------------------------------------------------
-echo -e "\n*** CLONE 'FORK CODE137 Apps' FROM GITHUB ***"
-sudo git clone https://github.com/marceloengecom/odoo-apps --depth 1 --branch $ODOO_VERSION $ODOO_DIR_CODE137
+read -p 'Instalar o módulo PagHiper da Code137 (ex: sim): ' CODE137_INSTALL
 
-echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
-sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
+if [ "$CODE137_INSTALL" = "sim" ]; then
+  echo -e "\n*** CLONE 'FORK CODE137 Apps' FROM GITHUB ***"
+  sudo git clone https://github.com/marceloengecom/odoo-apps --depth 1 --branch $ODOO_VERSION $ODOO_DIR_CODE137
 
+  echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
+  sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
+else
+  echo "O módulo PagHiper não será instalado"
+    while true; do
+            read -p 'Continuar a instalação dos demais módulos? (s/n)' sn
+            case $sn in
+            [Ss]*) break ;;
+            [Nn]*) exit ;;
+            *) echo "Por favor, responda Sim(s) ou Não(n)." ;;
+            esac
+    done
+fi 
 
 #--------------------------------------------------
 # CREATE SERVER CONFIG FILE
