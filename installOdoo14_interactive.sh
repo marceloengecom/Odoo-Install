@@ -37,13 +37,13 @@ DB_ADMINPASS=$DB_ADMINPASS
 ODOO_DIR="/opt/$ODOO_USER"
 ODOO_DIR_ADDONS="$ODOO_DIR/${ODOO_USER}-server/addons"
 ODOO_DIR_CUSTOM="$ODOO_DIR/custom-addons"
-
 ODOO_DIR_TRUSTCODE="$ODOO_DIR_CUSTOM/odoo-brasil"
 ODOO_DIR_OCA="$ODOO_DIR_CUSTOM/oca"
 ODOO_DIR_SOULINUX="$ODOO_DIR_CUSTOM/soulinux"
 ODOO_DIR_CODE137="$ODOO_DIR_CUSTOM/code137"
 ODOO_DIR_SERVER="$ODOO_DIR/${ODOO_USER}-server"
-ODOO_CONFIG="${ODOO_USER}-server"
+ODOO_CONFIG_FILE="${ODOO_USER}-server.conf"
+ODOO_LOG_FILE="${ODOO_USER}-server.log"
 ODOO_SERVICE="${ODOO_USER}.service"
 ODOO_IP="$(hostname -I)"
 LINUX_DISTRIBUTION=$(awk '{ print $1 }' /etc/issue)
@@ -78,8 +78,8 @@ Pasta padrão dos módulos Code137: $ODOO_DIR_CODE137
 Pasta padrão dos módulos SOULinux: $ODOO_DIR_SOULINUX
 
 Pasta padrão de instalação do servidor Odoo: $ODOO_DIR_SERVER
-Arquivo de Configuração: ${ODOO_CONFIG}.conf
-Arquivo de Log: /var/log/${ODOO_USER}/${ODOO_CONFIG}.log
+Arquivo de Configuração: /etc/$ODOO_CONFIG_FILE
+Arquivo de Log: /var/log/${ODOO_USER}/${ODOO_LOG_FILE}
 Distribuição Linux: $LINUX_DISTRIBUTION
 Endereço IP: $ODOO_IP
 "
@@ -221,9 +221,9 @@ done
 #--------------------------------------------------
 # Install TRUSTCODE LOCALIZATION (BRAZIL)
 #--------------------------------------------------
-read -p 'Instalar a Localização Brasileira TrustCODE? (ex: sim): ' TRUSTCODE_INSTALL
+read -p 'Instalar a Localização Brasileira TrustCODE? (ex: sim ou s): ' TRUSTCODE_INSTALL
 
-if [ "$TRUSTCODE_INSTALL" = "sim" ]; then
+if [ "$TRUSTCODE_INSTALL" = "sim" ] || [ "$TRUSTCODE_INSTALL" = "s" ] || [ "$TRUSTCODE_INSTALL" = "S" ] ; then
   echo -e "\n*** CLONE LOCALIZATION FROM GITHUB ***"
   sudo git clone https://github.com/Trust-Code/odoo-brasil --depth 1 --branch $ODOO_VERSION $ODOO_DIR_TRUSTCODE/
 
@@ -254,9 +254,9 @@ fi
 #----------------------------------------------------------
 # Install OCA MODULES TO REPORTS, FISCAL YEAR and CONTRACT
 #---------------------------------------------------------
-read -p 'Instalar os módulos OCA para relatórios, ano fiscal e faturas recorrentes? (ex: sim): ' OCA_INSTALL
+read -p 'Instalar os módulos OCA para relatórios, ano fiscal e faturas recorrentes? (ex: sim ou s): ' OCA_INSTALL
 
-if [ "$OCA_INSTALL" = "sim" ]; then
+if [ "$OCA_INSTALL" = "sim" ] || [ "$OCA_INSTALL" = "s" ] || [ "$OCA_INSTALL" = "S" ] ; then
   echo -e "\n*** CLONE 'Server-UX' FROM GITHUB ***"
   sudo git clone https://github.com/OCA/server-ux --depth 1 --branch $ODOO_VERSION $ODOO_DIR_OCA/server-ux
 
@@ -297,9 +297,9 @@ fi
 #--------------------------------------------------
 # Install SOULINUX ACCOUNT CHART
 #--------------------------------------------------
-read -p 'Instalar o módulo de Plano de Contas da SOULinux (ex: sim): ' SOULINUX_INSTALL
+read -p 'Instalar o módulo de Plano de Contas da SOULinux (ex: sim ou s): ' SOULINUX_INSTALL
 
-if [ "$SOULINUX_INSTALL" = "sim" ]; then
+if [ "$SOULINUX_INSTALL" = "sim" ] || [ "$SOULINUX_INSTALL" = "s" ] || [ "$SOULINUX_INSTALL" = "S" ] ; then
   echo -e "\n*** CLONE 'Plano de Contas SOULinux' FROM GITHUB ***"
   sudo git clone https://github.com/marceloengecom/br_coa_soulinux --depth 1 --branch $ODOO_VERSION $ODOO_DIR_SOULINUX/br_coa_soulinux
 
@@ -322,9 +322,9 @@ fi
 # Install CODE137 FORK MODULES
 # Only PagHiper Module has workinh on Odoo 14.0
 #--------------------------------------------------
-read -p 'Instalar o módulo PagHiper da Code137 (ex: sim): ' CODE137_INSTALL
+read -p 'Instalar o módulo PagHiper da Code137 (ex: sim ou s): ' CODE137_INSTALL
 
-if [ "$CODE137_INSTALL" = "sim" ]; then
+if [ "$CODE137_INSTALL" = "sim" ] || [ "$CODE137_INSTALL" = "s" ] || [ "$CODE137_INSTALL" = "S" ] ; then
   echo -e "\n*** CLONE 'FORK CODE137 Apps' FROM GITHUB ***"
   sudo git clone https://github.com/marceloengecom/odoo-apps --depth 1 --branch $ODOO_VERSION $ODOO_DIR_CODE137
 
@@ -347,21 +347,21 @@ fi
 #--------------------------------------------------
 
 echo -e "\n*** CREATE SERVER CONFIG FILE ***"
-sudo touch /etc/${ODOO_CONFIG}.conf
+sudo touch /etc/${ODOO_CONFIG_FILE}
 
-sudo su root -c "printf '[options]\n' >> /etc/${ODOO_CONFIG}.conf"
-sudo su root -c "printf '; This is the password that allows database operations:\n' >> /etc/${ODOO_CONFIG}.conf"
-sudo su root -c "printf 'admin_passwd = ${DB_ADMINPASS}\n' >> /etc/${ODOO_CONFIG}.conf"
-sudo su root -c "printf 'db_host = ${DB_HOST}\n' >> /etc/${ODOO_CONFIG}.conf"
-sudo su root -c "printf 'db_password = ${DB_PASSWORD}\n' >> /etc/${ODOO_CONFIG}.conf"
-sudo su root -c "printf 'db_port = ${DB_PORT}\n' >> /etc/${ODOO_CONFIG}.conf"
-sudo su root -c "printf 'db_user = ${DB_USER}\n' >> /etc/${ODOO_CONFIG}.conf"
-sudo su root -c "printf 'xmlrpc_port = ${ODOO_PORT}\n' >> /etc/${ODOO_CONFIG}.conf"
-sudo su root -c "printf 'logfile = /var/log/${ODOO_USER}/${ODOO_CONFIG}.log\n' >> /etc/${ODOO_CONFIG}.conf"
-sudo su root -c "printf 'addons_path=${ODOO_DIR_ADDONS},${ODOO_DIR_TRUSTCODE},${ODOO_DIR_CODE137},${ODOO_DIR_SOULINUX},${ODOO_DIR_OCA}/mis-builder,${ODOO_DIR_OCA}/reporting-engine,${ODOO_DIR_OCA}/server-ux,${ODOO_DIR_OCA}/account-financial-tools\n' >> /etc/${ODOO_CONFIG}.conf"
+sudo su root -c "printf '[options]\n' >> /etc/${ODOO_CONFIG_FILE}"
+sudo su root -c "printf '; This is the password that allows database operations:\n' >> /etc/${ODOO_CONFIG_FILE}"
+sudo su root -c "printf 'admin_passwd = ${DB_ADMINPASS}\n' >> /etc/${ODOO_CONFIG_FILE}"
+sudo su root -c "printf 'db_host = ${DB_HOST}\n' >> /etc/${ODOO_CONFIG_FILE}"
+sudo su root -c "printf 'db_password = ${DB_PASSWORD}\n' >> /etc/${ODOO_CONFIG_FILE}"
+sudo su root -c "printf 'db_port = ${DB_PORT}\n' >> /etc/${ODOO_CONFIG_FILE}"
+sudo su root -c "printf 'db_user = ${DB_USER}\n' >> /etc/${ODOO_CONFIG_FILE}"
+sudo su root -c "printf 'xmlrpc_port = ${ODOO_PORT}\n' >> /etc/${ODOO_CONFIG_FILE}"
+sudo su root -c "printf 'logfile = /var/log/${ODOO_USER}/${ODOO_LOG_FILE}\n' >> /etc/${ODOO_CONFIG_FILE}"
+sudo su root -c "printf 'addons_path=${ODOO_DIR_ADDONS},${ODOO_DIR_TRUSTCODE},${ODOO_DIR_CODE137},${ODOO_DIR_SOULINUX},${ODOO_DIR_OCA}/mis-builder,${ODOO_DIR_OCA}/reporting-engine,${ODOO_DIR_OCA}/server-ux,${ODOO_DIR_OCA}/account-financial-tools\n' >> /etc/${ODOO_CONFIG_FILE}"
 
-sudo chown $ODOO_USER:$ODOO_USER /etc/${ODOO_CONFIG}.conf
-sudo chmod 640 /etc/${ODOO_CONFIG}.conf
+sudo chown $ODOO_USER:$ODOO_USER /etc/${ODOO_CONFIG_FILE}
+sudo chmod 640 /etc/${ODOO_CONFIG_FILE}
 
 
 #--------------------------------------------------
@@ -381,7 +381,7 @@ SyslogIdentifier=odoo-server
 PermissionsStartOnly=true
 User=${ODOO_USER}
 Group=${ODOO_USER}
-ExecStart=${ODOO_DIR_SERVER}/odoo-bin -c /etc/${ODOO_CONFIG}.conf
+ExecStart=${ODOO_DIR_SERVER}/odoo-bin -c /etc/${ODOO_CONFIG_FILE}
 WorkingDirectory=${ODOO_DIR_SERVER}
 StandardOutput=journal+console
 
@@ -393,7 +393,25 @@ EOF
 sudo chmod 755 /etc/systemd/system/$ODOO_SERVICE
 sudo chown root: /etc/systemd/system/$ODOO_SERVICE
 
-echo -e "*** START ODOO ON STARTUP ***"
+#---------------------------------------------
+# ODOO LOGS LOGROTATE
+#---------------------------------------------
+
+echo -e "*** CREATE LOGROTATE FILE ***"
+cat <<EOF > /etc/logrotate.d/$ODOO_USER
+#Generate 1 logfile per day and retain 30 logs
+
+/var/log/${ODOO_USER}/${ODOO_LOG_FILE} {
+    daily
+    missingok
+    rotate 30
+    compress
+    notifempty
+}
+EOF
+
+
+echo -e "*** ODOO ON STARTUP ***"
 sudo systemctl enable /etc/systemd/system/$ODOO_SERVICE
 
 echo -e "*** START ODOO ***"
@@ -404,7 +422,7 @@ sudo systemctl status $ODOO_SERVICE
 
 
 echo -e "*** COMMANDS TO CHECK ODOO LOGS:  ***"
-echo -e "*** 'sudo journalctl -u $ODOO_USER' OR 'sudo tail -f /var/log/${ODOO_USER}/${ODOO_CONFIG}.log' ***"
+echo -e "*** 'sudo journalctl -u $ODOO_USER' OR 'sudo tail -f /var/log/${ODOO_USER}/${ODOO_LOG_FILE}' ***"
 
 
 echo -e "*** OPEN ODOO INSTANCE ON YOUR BROWSER ***"
