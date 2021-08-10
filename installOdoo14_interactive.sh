@@ -358,7 +358,7 @@ sudo su root -c "printf 'db_port = ${DB_PORT}\n' >> /etc/${ODOO_CONFIG_FILE}"
 sudo su root -c "printf 'db_user = ${DB_USER}\n' >> /etc/${ODOO_CONFIG_FILE}"
 sudo su root -c "printf 'xmlrpc_port = ${ODOO_PORT}\n' >> /etc/${ODOO_CONFIG_FILE}"
 sudo su root -c "printf 'logfile = /var/log/${ODOO_USER}/${ODOO_LOG_FILE}\n' >> /etc/${ODOO_CONFIG_FILE}"
-sudo su root -c "printf 'addons_path=${ODOO_DIR_ADDONS},${ODOO_DIR_TRUSTCODE},${ODOO_DIR_CODE137},${ODOO_DIR_SOULINUX},${ODOO_DIR_OCA}/mis-builder,${ODOO_DIR_OCA}/reporting-engine,${ODOO_DIR_OCA}/server-ux,${ODOO_DIR_OCA}/account-financial-tools\n' >> /etc/${ODOO_CONFIG_FILE}"
+sudo su root -c "printf 'addons_path=${ODOO_DIR_ADDONS},${ODOO_DIR_TRUSTCODE},${ODOO_DIR_CODE137},${ODOO_DIR_SOULINUX},${ODOO_DIR_OCA}/mis-builder,${ODOO_DIR_OCA}/reporting-engine,${ODOO_DIR_OCA}/server-ux,${ODOO_DIR_OCA}/account-financial-tools,${ODOO_DIR_OCA}/contract\n' >> /etc/${ODOO_CONFIG_FILE}"
 
 sudo chown $ODOO_USER:$ODOO_USER /etc/${ODOO_CONFIG_FILE}
 sudo chmod 640 /etc/${ODOO_CONFIG_FILE}
