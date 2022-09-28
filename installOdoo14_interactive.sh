@@ -1,17 +1,17 @@
 #!/bin/bash
 ##############################################################################################################
-# Script for installing Community Odoo 15 on Ubuntu 22.04 64Bits and Brazillian Localizaton
+# Script for installing Community Odoo 14 on Ubuntu 20.04 64Bits and Brazillian Localizaton
 # developed by Trust Code: https://github.com/Trust-Code/odoo-brasil
 #
 # Script is based on https://github.com/Yenthe666/InstallScript 
 # Author: Marcelo Costa from SOULinux (www.soulinux.com)
 #-------------------------------------------------------------------------------------------------------------
-# This script will install Odoo on your Ubuntu 22.04 server.
+# This script will install Odoo on your Ubuntu 20.04 server.
 # It can install multiple Odoo instances in one Ubuntu on different "xmlrpc_ports" and different "users"
 #-------------------------------------------------------------------------------------------------------------
 # # Place this content in it and then make the file executable:
 # sudo chmod +x installOdoo14Ubuntu.sh
-# Execute the script to install Odoo: ./installOdoo15Ubuntu.sh
+# Execute the script to install Odoo: ./installOdoo14Ubuntu.sh
 #
 ##############################################################################################################
 
@@ -19,7 +19,7 @@
 echo -e "\n*** INFORME OS PARÂMETROS BÁSICOS DE INSTALAÇÃO DO ODOO ***\n"
 
 read -p 'Informe o nome do seu usuário Odoo (ex: odoo): ' ODOO_USER
-read -p 'Informe a versão do seu Odoo (ex: 15.0): ' ODOO_VERSION
+read -p 'Informe a versão do seu Odoo (ex: 14.0): ' ODOO_VERSION
 read -p 'Informe a porta do seu Odoo (ex: 8069): ' ODOO_PORT
 read -p 'Informe a sua Timezone (ex: America/Sao_Paulo): ' TIMEZONE
 read -p 'Informe a senha administrativa do banco de dados Odoo (ex: Psql-123456): ' DB_ADMINPASS

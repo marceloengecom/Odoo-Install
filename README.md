@@ -1,6 +1,6 @@
 
-## [installOdoo15_interactive.sh](https://github.com/marceloengecom/Odoo-Install/blob/15.0/installOdoo15_interactive.sh)
-#### Este script instala a versão Comunity do Odoo 15.0 no Ubuntu 22.04 e pergunta se deseja instalar os módulos adicionais largamente usados no Brasil
+## [installOdoo14_interactive.sh](https://github.com/marceloengecom/Odoo-Install/blob/14.0/installOdoo14_interactive.sh)
+#### Este script instala a versão Comunity do Odoo 14.0 no Ubuntu 20.04 e pergunta se deseja instalar os módulos adicionais largamente usados no Brasil
 
 
 
@@ -8,23 +8,23 @@
 
 #### 1. Faça o download do respectivo script:
 ```
-sudo wget https://raw.githubusercontent.com/marceloengecom/Odoo-Install/15.0/installOdoo15_interactive.sh
+sudo wget https://raw.githubusercontent.com/marceloengecom/Odoo-Install/14.0/installOdoo14_interactive.sh
 ```
 
 #### 2. Torne o respectivo script executável:
 ```
-sudo chmod +x installOdoo15_interactive.sh
+sudo chmod +x installOdoo14_interactive.sh
 ```
 
 #### 3. Execute o respectivo script:
 ```
-sudo ./installOdoo15_interactive.sh
+sudo ./installOdoo14_interactive.sh
 ```
 
 #### 4. Após executar o script, defina os parâmetros básicos para instalação do Odoo:
 ```
 Nome do seu usuário Odoo (ex: odoo)
-Versão do seu Odoo (ex: 15.0)
+Versão do seu Odoo (ex: 14.0)
 Porta do seu Odoo (ex: 8069)
 Timezone (ex: America/Sao_Paulo)
 Senha administrativa do banco de dados (ex: Psql-123456)
