@@ -1,5 +1,5 @@
 
-## [installOdoo14_interactive.sh](https://github.com/marceloengecom/Odoo-Install/blob/15.0/installOdoo15_interactive.sh)
+## [installOdoo15_interactive.sh](https://github.com/marceloengecom/Odoo-Install/blob/15.0/installOdoo15_interactive.sh)
 #### Este script instala a versão Comunity do Odoo 15.0 no Ubuntu e pergunta se deseja instalar os módulos adicionais largamente usados no Brasil
 
 
