@@ -1,17 +1,16 @@
 #!/bin/bash
 ##############################################################################################################
-# Script for installing Community Odoo on Ubuntu 22.04 64Bits and Brazillian Localizaton
-# developed by Trust Code: https://github.com/Trust-Code/odoo-brasil
+# Script for installing Community Odoo on Ubuntu 22.04 64Bits and Brazillian Localization
 #
 # Script is based on https://github.com/Yenthe666/InstallScript 
-# Author: Marcelo Costa from SOULinux (www.soulinux.com)
+# Author: Marcelo Costa from engeCloud (www.engecloud.com)
 #-------------------------------------------------------------------------------------------------------------
-# This script will install Odoo on your Ubuntu 22.04 server.
+# This script will install Odoo on your Ubuntu Server.
 # It can install multiple Odoo instances in one Ubuntu on different "xmlrpc_ports" and different "users"
 #-------------------------------------------------------------------------------------------------------------
 # # Place this content in it and then make the file executable:
-# sudo chmod +x installOdoo14Ubuntu.sh
-# Execute the script to install Odoo: ./installOdoo14Ubuntu.sh
+# sudo chmod +x installOdoo15Ubuntu.sh
+# Execute the script to install Odoo: ./installOdoo15Ubuntu.sh
 #
 ##############################################################################################################
 
@@ -326,7 +325,7 @@ read -p 'Instalar o módulo PagHiper da Code137 (ex: sim ou s): ' CODE137_INSTAL
 
 if [ "$CODE137_INSTALL" = "sim" ] || [ "$CODE137_INSTALL" = "s" ] || [ "$CODE137_INSTALL" = "S" ] ; then
   echo -e "\n*** CLONE 'FORK CODE137 Apps' FROM GITHUB ***"
-  sudo git clone https://github.com/marceloengecom/odoo-apps --depth 1 --branch $ODOO_VERSION $ODOO_DIR_CODE137
+  sudo git clone https://github.com/Code-137/odoo-apps --depth 1 --branch $ODOO_VERSION $ODOO_DIR_CODE137
 
   echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
   sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
