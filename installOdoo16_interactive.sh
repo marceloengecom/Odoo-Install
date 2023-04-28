@@ -73,8 +73,11 @@ Pasta padrão de instalação dos Módulos Personalizados: $ODOO_DIR_CUSTOM
 
 Pasta padrão dos módulos TrustCODE: $ODOO_DIR_TRUSTCODE
 Pasta padrão dos módulos OCA: $ODOO_DIR_OCA
-#Pasta padrão dos módulos Code137: $ODOO_DIR_CODE137
-#Pasta padrão dos módulos engeCloud: $ODOO_DIR_ENGECLOUD
+
+#--------------------------------------------------
+# Pasta padrão dos módulos Code137: $ODOO_DIR_CODE137
+# Pasta padrão dos módulos engeCloud: $ODOO_DIR_ENGECLOUD
+#--------------------------------------------------
 
 Pasta padrão de instalação do servidor Odoo: $ODOO_DIR_SERVER
 Arquivo de Configuração: /etc/$ODOO_CONFIG_FILE
@@ -171,7 +174,7 @@ sudo apt install git gcc wget pkg-config gdebi-core python3 python3-pip python3-
 echo -e "\n*** UPGRADE PIP ***"
 sudo pip3 install --upgrade pip
 
-echo -e "\n*** INSTALLING GDATA (Google data Python client) ***" 
+echo -e "\n*** INSTALLING GDATA - Google Data Python Client ***" 
 sudo pip3 install gdata
 
 echo -e "\n*** INSTALANDO NODE JS NPM AND RTLCSS FOR LTR SUPPORT ***"
