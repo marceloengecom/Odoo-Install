@@ -9,8 +9,8 @@
 # It can install multiple Odoo instances in one Ubuntu on different "xmlrpc_ports" and different "users"
 #-------------------------------------------------------------------------------------------------------------
 # # Place this content in it and then make the file executable:
-# sudo chmod +x installOdoo16Ubuntu.sh
-# Execute the script to install Odoo: ./installOdoo16Ubuntu.sh
+# sudo chmod +x installOdoo15Ubuntu.sh
+# Execute the script to install Odoo: ./installOdoo15Ubuntu.sh
 #
 ##############################################################################################################
 
@@ -18,7 +18,7 @@
 echo -e "\n*** INFORME OS PARÂMETROS BÁSICOS DE INSTALAÇÃO DO ODOO ***\n"
 
 read -p 'Informe o nome do seu usuário Odoo (ex: odoo): ' ODOO_USER
-read -p 'Informe a versão do seu Odoo (ex: 16.0): ' ODOO_VERSION
+read -p 'Informe a versão do seu Odoo (ex: 15.0): ' ODOO_VERSION
 read -p 'Informe a porta do seu Odoo (ex: 8069): ' ODOO_PORT
 read -p 'Informe a sua Timezone (ex: America/Sao_Paulo): ' TIMEZONE
 read -p 'Informe a senha administrativa do banco de dados Odoo (ex: Psql-123456): ' DB_ADMINPASS
@@ -108,17 +108,7 @@ DB_PASSWORD="False"
 
 ###  WKHTMLTOPDF download link
 ## Check the correct version of wkhtmltopdf at https://wkhtmltopdf.org/downloads.html
-
-ubuntuVersion=$(lsb_release -c --short)
-echo "$ubuntuVersion
-
-if [ "$ubuntuVersion" = "jammy" ]; then
-        WKHTMLTOX_X64=https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb
-elif [ "$ubuntuVersion" = "focal" ]; then
-        WKHTMLTOX_X64=https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.focal_amd64.deb
-else
-        echo "Sua versão do Ubuntu é diferente das versões '20.04' e '22.04'. Instale o WKHTMLTOPDF manualmente"
-fi
+WKHTMLTOX_X64=https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.focal_amd64.deb
 
 #--------------------------------------------------
 # Update Operational System
@@ -240,7 +230,7 @@ if [ "$TRUSTCODE_INSTALL" = "sim" ] || [ "$TRUSTCODE_INSTALL" = "s" ] || [ "$TRU
   sudo pip3 install -r $ODOO_DIR_TRUSTCODE/requirements.txt
 
   echo -e "\n*** INSTALL OTHERS TRUSTCODE PYTHON PACKAGES ***"
-  sudo pip3 install python3-cnab python3-boleto pycnab240 python-sped pytrustnfe3
+  sudo pip3 install python3-cnab python3-boleto pycnab240 python-sped
 
   echo -e "\n*** INSTALL IUGU PYTHON REST API  ***"
   sudo pip3 install iugu
@@ -301,7 +291,55 @@ else
             *) echo "Por favor, responda Sim(s) ou Não(n)." ;;
             esac
     done
-fi
+fi  
+
+#--------------------------------------------------
+# Install SOULINUX ACCOUNT CHART
+#--------------------------------------------------
+read -p 'Instalar o módulo de Plano de Contas da SOULinux (ex: sim ou s): ' SOULINUX_INSTALL
+
+if [ "$SOULINUX_INSTALL" = "sim" ] || [ "$SOULINUX_INSTALL" = "s" ] || [ "$SOULINUX_INSTALL" = "S" ] ; then
+  echo -e "\n*** CLONE 'Plano de Contas SOULinux' FROM GITHUB ***"
+  sudo git clone https://github.com/marceloengecom/br_coa_soulinux --depth 1 --branch $ODOO_VERSION $ODOO_DIR_SOULINUX/br_coa_soulinux
+
+  echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
+  sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
+
+else
+  echo "O módulo de Plano de Contas da SOULinux não será instalado"
+    while true; do
+            read -p 'Continuar a instalação dos demais módulos? (s/n)' sn
+            case $sn in
+            [Ss]*) break ;;
+            [Nn]*) exit ;;
+            *) echo "Por favor, responda Sim(s) ou Não(n)." ;;
+            esac
+    done
+fi  
+
+#--------------------------------------------------
+# Install CODE137 FORK MODULES
+# Only PagHiper Module has workinh on Odoo 15.0
+#--------------------------------------------------
+read -p 'Instalar o módulo PagHiper da Code137 (ex: sim ou s): ' CODE137_INSTALL
+
+if [ "$CODE137_INSTALL" = "sim" ] || [ "$CODE137_INSTALL" = "s" ] || [ "$CODE137_INSTALL" = "S" ] ; then
+  echo -e "\n*** CLONE 'FORK CODE137 Apps' FROM GITHUB ***"
+  sudo git clone https://github.com/Code-137/odoo-apps --depth 1 --branch $ODOO_VERSION $ODOO_DIR_CODE137
+
+  echo -e "\n*** SETTING PERMISSIONS ON ENTIRE ODOO DIRECTORY ***"
+  sudo chown -R $ODOO_USER:$ODOO_USER $ODOO_DIR/*
+else
+  echo "O módulo PagHiper não será instalado"
+    while true; do
+            read -p 'Continuar a instalação dos demais módulos? (s/n)' sn
+            case $sn in
+            [Ss]*) break ;;
+            [Nn]*) exit ;;
+            *) echo "Por favor, responda Sim(s) ou Não(n)." ;;
+            esac
+    done
+fi 
 
 #--------------------------------------------------
 # CREATE SERVER CONFIG FILE
@@ -319,7 +357,7 @@ sudo su root -c "printf 'db_port = ${DB_PORT}\n' >> /etc/${ODOO_CONFIG_FILE}"
 sudo su root -c "printf 'db_user = ${DB_USER}\n' >> /etc/${ODOO_CONFIG_FILE}"
 sudo su root -c "printf 'xmlrpc_port = ${ODOO_PORT}\n' >> /etc/${ODOO_CONFIG_FILE}"
 sudo su root -c "printf 'logfile = /var/log/${ODOO_USER}/${ODOO_LOG_FILE}\n' >> /etc/${ODOO_CONFIG_FILE}"
-sudo su root -c "printf 'addons_path=${ODOO_DIR_ADDONS},${ODOO_DIR_TRUSTCODE},${ODOO_DIR_OCA}/mis-builder,${ODOO_DIR_OCA}/reporting-engine,${ODOO_DIR_OCA}/server-ux,${ODOO_DIR_OCA}/account-financial-tools,${ODOO_DIR_OCA}/contract\n' >> /etc/${ODOO_CONFIG_FILE}"
+sudo su root -c "printf 'addons_path=${ODOO_DIR_ADDONS},${ODOO_DIR_TRUSTCODE},${ODOO_DIR_CODE137},${ODOO_DIR_SOULINUX},${ODOO_DIR_OCA}/mis-builder,${ODOO_DIR_OCA}/reporting-engine,${ODOO_DIR_OCA}/server-ux,${ODOO_DIR_OCA}/account-financial-tools,${ODOO_DIR_OCA}/contract\n' >> /etc/${ODOO_CONFIG_FILE}"
 
 sudo chown $ODOO_USER:$ODOO_USER /etc/${ODOO_CONFIG_FILE}
 sudo chmod 640 /etc/${ODOO_CONFIG_FILE}
