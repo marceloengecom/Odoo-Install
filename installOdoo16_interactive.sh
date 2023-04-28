@@ -113,7 +113,7 @@ DB_PASSWORD="False"
 ## Check the correct version of wkhtmltopdf at https://wkhtmltopdf.org/downloads.html
 
 ubuntuVersion=$(lsb_release -c --short)
-echo "$ubuntuVersion
+echo "$ubuntuVersion"
 
 if [ "$ubuntuVersion" = "jammy" ]; then
         WKHTMLTOX_X64=https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb
