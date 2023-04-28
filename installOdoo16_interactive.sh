@@ -38,7 +38,7 @@ ODOO_DIR_ADDONS="$ODOO_DIR/${ODOO_USER}-server/addons"
 ODOO_DIR_CUSTOM="$ODOO_DIR/custom-addons"
 ODOO_DIR_TRUSTCODE="$ODOO_DIR_CUSTOM/odoo-brasil"
 ODOO_DIR_OCA="$ODOO_DIR_CUSTOM/oca"
-ODOO_DIR_SOULINUX="$ODOO_DIR_CUSTOM/soulinux"
+ODOO_DIR_ENGECLOUD="$ODOO_DIR_CUSTOM/engecloud"
 ODOO_DIR_CODE137="$ODOO_DIR_CUSTOM/code137"
 ODOO_DIR_SERVER="$ODOO_DIR/${ODOO_USER}-server"
 ODOO_CONFIG_FILE="${ODOO_USER}-server.conf"
@@ -73,8 +73,8 @@ Pasta padrão de instalação dos Módulos Personalizados: $ODOO_DIR_CUSTOM
 
 Pasta padrão dos módulos TrustCODE: $ODOO_DIR_TRUSTCODE
 Pasta padrão dos módulos OCA: $ODOO_DIR_OCA
-Pasta padrão dos módulos Code137: $ODOO_DIR_CODE137
-Pasta padrão dos módulos SOULinux: $ODOO_DIR_SOULINUX
+#Pasta padrão dos módulos Code137: $ODOO_DIR_CODE137
+#Pasta padrão dos módulos engeCloud: $ODOO_DIR_ENGECLOUD
 
 Pasta padrão de instalação do servidor Odoo: $ODOO_DIR_SERVER
 Arquivo de Configuração: /etc/$ODOO_CONFIG_FILE
