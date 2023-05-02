@@ -1,6 +1,6 @@
 
 ## [installOdoo16_interactive.sh](https://github.com/marceloengecom/Odoo-Install/blob/16.0/installOdoo16_interactive.sh)
-#### Este script instala a versão Comunity do Odoo 16.0 no Ubuntu e pergunta se deseja instalar os módulos adicionais largamente usados no Brasil
+#### Este script instala a versão Comunity do Odoo 16.0 no Ubuntu 22.04 LTS e pergunta se deseja instalar os módulos adicionais largamente usados no Brasil
 
 
 
