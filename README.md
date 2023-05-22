@@ -34,7 +34,6 @@ Senha administrativa do banco de dados (ex: Psql-123456)
 ```
 TrustCode (Módulos para Localização Brasileira)
 OCA (módulos para relatórios, ano fiscal e faturas recorrentes)
-SOULinux (Plano de Contas)
 CODE137 (Boleto PagHiper)
 ```
 
